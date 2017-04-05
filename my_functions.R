@@ -31,16 +31,28 @@ tozsde_plot <- function(number_of_days, my_adatom){
   for(i in list_of_markets){
     tmp_data <-adatom[ticker==i,]
     current <- tmp_data$Close[1]
-    valtozasok <- c(0, (( tmp_data$Close[2:number_of_days]/current)-1)*100)
+    change <- c(0, (( tmp_data$Close[2:number_of_days]/current)-1)*100)
     #napok <-c('Today','1day before', '3 day before', '4 day before', '5 day before','10 day before','20 day before', '30 day before') 
-    tmp_data$valtozasok <- valtozasok
+    tmp_data$change <- change
     #tmp_data$my_days <- napok
     my_df <- rbind(my_df, tmp_data)
     
   }
-  
-  p<-plot_ly(my_df, x = ~Date, y = ~valtozasok, color =~ticker, text= ~Close)%>%
-    add_lines()%>%layout(title = paste(number_of_days, 'Days'))
+  f <- list(
+    family = "Courier New, monospace",
+    size = 18,
+    color = "#7f7f7f"
+  )
+  x <- list(
+    title = "Date",
+    titlefont = f
+  )
+  y <- list(
+    title = "Change (%)",
+    titlefont = f
+  )
+  p<-plot_ly(my_df, x = ~Date, y = ~change, color =~ticker, text= ~Close)%>%
+    add_lines()%>%layout(title = paste(number_of_days, 'Days'), xaxis = x, yaxis = y)
   
   return(p)
   
