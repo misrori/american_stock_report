@@ -17,3 +17,31 @@ prices <- function(tickers, startDate=c("01", "01", "1900") ){
   temp;})
   df <- do.call("rbind", df)
 }
+
+
+
+tozsde_plot <- function(number_of_days, my_adatom){
+  
+  my_days <- sort(unique(my_adatom$Date), decreasing = T)[c(1:number_of_days)]
+  adatom <- data.table(my_adatom[my_adatom$Date %in% my_days,])
+  setorder(adatom, ticker, Date)
+  
+  my_df <- data.table()
+  
+  for(i in list_of_markets){
+    tmp_data <-adatom[ticker==i,]
+    current <- tmp_data$Close[1]
+    valtozasok <- c(0, (( tmp_data$Close[2:number_of_days]/current)-1)*100)
+    #napok <-c('Today','1day before', '3 day before', '4 day before', '5 day before','10 day before','20 day before', '30 day before') 
+    tmp_data$valtozasok <- valtozasok
+    #tmp_data$my_days <- napok
+    my_df <- rbind(my_df, tmp_data)
+    
+  }
+  
+  p<-plot_ly(my_df, x = ~Date, y = ~valtozasok, color =~ticker, text= ~Close)%>%
+    add_lines()%>%layout(title = paste(number_of_days, 'Days'))
+  
+  return(p)
+  
+}
