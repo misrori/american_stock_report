@@ -1,0 +1,36 @@
+---
+title: "Report of stocks"
+author: "Misi"
+date: "April 5, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+source('my_functions.R')
+#install.packages("install.load")
+library(install.load)
+load_package("DT","data.table","stringr", "plotly")
+list_of_markets <- c("TSLA", "NVDA", "AMD", "AAPL", "GE", "MU", "OLED")
+adatom_teljes <- prices(list_of_markets)
+adatom_teljes$Date <- as.Date(adatom_teljes$Date)
+
+```
+
+## R Markdown
+
+Here you can see how the price of stocks were changed within 5 days. 
+The prices compared always with the first day. 
+For example if you see the title is 20 days. Than it will show the total changes frow 20 working days before.  
+
+
+5 days before
+```{r}
+tozsde_plot(number_of_days = 5, my_adatom = adatom_teljes)
+```
+
+
+20 days before
+```{r}
+tozsde_plot(number_of_days = 20, my_adatom = adatom_teljes)
+```
+
