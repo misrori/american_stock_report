@@ -19,7 +19,6 @@ prices <- function(tickers, startDate=c("01", "01", "1900") ){
 }
 
 
-
 tozsde_plot <- function(number_of_days, my_adatom){
   
   my_days <- sort(unique(my_adatom$Date), decreasing = T)[c(1:number_of_days)]
